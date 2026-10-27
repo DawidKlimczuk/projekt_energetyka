@@ -1,0 +1,1283 @@
+{
+  "compatibilityLevel": 1567,
+  "model": {
+    "culture": "pl-PL",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "pl-PL",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "tables": [
+      {
+        "name": "Fakt_KSE_Godzinowy",
+        "columns": [
+          {
+            "name": "CzasLokalny",
+            "dataType": "dateTime",
+            "sourceColumn": "CzasLokalny",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd hh:nn"
+          },
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Zapotrzebowanie_MW",
+            "dataType": "double",
+            "sourceColumn": "Zapotrzebowanie_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Prognoza_PSE_MW",
+            "dataType": "string",
+            "sourceColumn": "Prognoza_PSE_MW",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Generacja_Wiatr_MW",
+            "dataType": "double",
+            "sourceColumn": "Generacja_Wiatr_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Generacja_PV_MW",
+            "dataType": "double",
+            "sourceColumn": "Generacja_PV_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Zapotrzebowanie_Netto_MW",
+            "dataType": "double",
+            "sourceColumn": "Zapotrzebowanie_Netto_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Generacja_Calkowita_MW",
+            "dataType": "double",
+            "sourceColumn": "Generacja_Calkowita_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Udzial_OZE_proc",
+            "dataType": "double",
+            "sourceColumn": "Udzial_OZE_proc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Udzial_Wegla_proc",
+            "dataType": "double",
+            "sourceColumn": "Udzial_Wegla_proc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Cena_PLN_MWh",
+            "dataType": "double",
+            "sourceColumn": "Cena_PLN_MWh",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Temperatura_C",
+            "dataType": "double",
+            "sourceColumn": "Temperatura_C",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Wiatr_100m_ms",
+            "dataType": "double",
+            "sourceColumn": "Wiatr_100m_ms",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Promieniowanie_Wm2",
+            "dataType": "double",
+            "sourceColumn": "Promieniowanie_Wm2",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Zachmurzenie_proc",
+            "dataType": "double",
+            "sourceColumn": "Zachmurzenie_proc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fakt_KSE_Godzinowy",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_fakt_kse_godzinowy\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"CzasLokalny\", type datetime}, {\"Data\", type date}, {\"Godzina\", Int64.Type}, {\"Zapotrzebowanie_MW\", type number}, {\"Prognoza_PSE_MW\", type text}, {\"Generacja_Wiatr_MW\", type number}, {\"Generacja_PV_MW\", type number}, {\"Zapotrzebowanie_Netto_MW\", type number}, {\"Generacja_Calkowita_MW\", type number}, {\"Udzial_OZE_proc\", type number}, {\"Udzial_Wegla_proc\", type number}, {\"Cena_PLN_MWh\", type number}, {\"Temperatura_C\", type number}, {\"Wiatr_100m_ms\", type number}, {\"Promieniowanie_Wm2\", type number}, {\"Zachmurzenie_proc\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Średnie zapotrzebowanie (MW)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Zapotrzebowanie_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Maksymalne zapotrzebowanie (MW)",
+            "expression": "MAX(Fakt_KSE_Godzinowy[Zapotrzebowanie_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Zużycie energii (GWh)",
+            "expression": "SUM(Fakt_KSE_Godzinowy[Zapotrzebowanie_MW]) / 1000",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Średnia generacja PV (MW)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Generacja_PV_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Średnia generacja wiatrowa (MW)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Generacja_Wiatr_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Średnie zapotrzebowanie netto (MW)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Zapotrzebowanie_Netto_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Średnia cena (PLN/MWh)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Cena_PLN_MWh])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Minimalna cena (PLN/MWh)",
+            "expression": "MIN(Fakt_KSE_Godzinowy[Cena_PLN_MWh])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Godziny z ceną ujemną",
+            "expression": "CALCULATE(COUNTROWS(Fakt_KSE_Godzinowy), Fakt_KSE_Godzinowy[Cena_PLN_MWh] < 0) + 0",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Średni udział OZE godzinowy (%)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Udzial_OZE_proc]) / 100",
+            "formatString": "0.0%"
+          },
+          {
+            "name": "Średnia temperatura (°C)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Temperatura_C])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Średnia prędkość wiatru (m/s)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Wiatr_100m_ms])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Średnie promieniowanie (W/m²)",
+            "expression": "AVERAGE(Fakt_KSE_Godzinowy[Promieniowanie_Wm2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Zapotrzebowanie rok do roku (%)",
+            "expression": [
+              "VAR Biezace = [Średnie zapotrzebowanie (MW)]",
+              "VAR Poprzednie = CALCULATE([Średnie zapotrzebowanie (MW)], SAMEPERIODLASTYEAR(Dim_Kalendarz[Data]))",
+              "RETURN DIVIDE(Biezace - Poprzednie, Poprzednie)"
+            ],
+            "formatString": "+0.0%;-0.0%;0.0%"
+          }
+        ]
+      },
+      {
+        "name": "Fakt_Miks",
+        "columns": [
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "KodZrodla",
+            "dataType": "string",
+            "sourceColumn": "KodZrodla",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Generacja_MW",
+            "dataType": "double",
+            "sourceColumn": "Generacja_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fakt_Miks",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_fakt_miks\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Data\", type date}, {\"Godzina\", Int64.Type}, {\"KodZrodla\", type text}, {\"Generacja_MW\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Średnia generacja (MW)",
+            "expression": "DIVIDE(SUM(Fakt_Miks[Generacja_MW]), COUNTROWS(Fakt_KSE_Godzinowy))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Produkcja energii (GWh)",
+            "expression": "SUM(Fakt_Miks[Generacja_MW]) / 1000",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Udział OZE w produkcji (%)",
+            "expression": [
+              "DIVIDE(CALCULATE(SUM(Fakt_Miks[Generacja_MW]), Dim_Zrodlo[Kategoria] = \"OZE\"),",
+              "       CALCULATE(SUM(Fakt_Miks[Generacja_MW]), Dim_Zrodlo[Kategoria] <> \"magazynowanie\"))"
+            ],
+            "formatString": "0.0%"
+          },
+          {
+            "name": "Udział w produkcji (%)",
+            "expression": [
+              "DIVIDE(SUM(Fakt_Miks[Generacja_MW]),",
+              "       CALCULATE(SUM(Fakt_Miks[Generacja_MW]), ALL(Dim_Zrodlo)))"
+            ],
+            "formatString": "0.0%"
+          }
+        ]
+      },
+      {
+        "name": "Fakt_Pogoda_Stacje",
+        "columns": [
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "IdStacji",
+            "dataType": "string",
+            "sourceColumn": "IdStacji",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Temperatura_C",
+            "dataType": "double",
+            "sourceColumn": "Temperatura_C",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Wiatr_100m_ms",
+            "dataType": "double",
+            "sourceColumn": "Wiatr_100m_ms",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Promieniowanie_Wm2",
+            "dataType": "double",
+            "sourceColumn": "Promieniowanie_Wm2",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Zachmurzenie_proc",
+            "dataType": "double",
+            "sourceColumn": "Zachmurzenie_proc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fakt_Pogoda_Stacje",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_fakt_pogoda_stacje\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Data\", type date}, {\"Godzina\", Int64.Type}, {\"IdStacji\", type text}, {\"Temperatura_C\", type number}, {\"Wiatr_100m_ms\", type number}, {\"Promieniowanie_Wm2\", type number}, {\"Zachmurzenie_proc\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Temperatura w stacji (°C)",
+            "expression": "AVERAGE(Fakt_Pogoda_Stacje[Temperatura_C])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Wiatr w stacji (m/s)",
+            "expression": "AVERAGE(Fakt_Pogoda_Stacje[Wiatr_100m_ms])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Promieniowanie w stacji (W/m²)",
+            "expression": "AVERAGE(Fakt_Pogoda_Stacje[Promieniowanie_Wm2])",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Fakt_Prognoza",
+        "columns": [
+          {
+            "name": "CzasLokalny",
+            "dataType": "dateTime",
+            "sourceColumn": "CzasLokalny",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd hh:nn"
+          },
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Rzeczywiste_MW",
+            "dataType": "double",
+            "sourceColumn": "Rzeczywiste_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Prognoza_PSE_MW",
+            "dataType": "double",
+            "sourceColumn": "Prognoza_PSE_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Prognoza_Naiwna_MW",
+            "dataType": "double",
+            "sourceColumn": "Prognoza_Naiwna_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Prognoza_Model_MW",
+            "dataType": "double",
+            "sourceColumn": "Prognoza_Model_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fakt_Prognoza",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_fakt_prognoza\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"CzasLokalny\", type datetime}, {\"Data\", type date}, {\"Godzina\", Int64.Type}, {\"Rzeczywiste_MW\", type number}, {\"Prognoza_PSE_MW\", type number}, {\"Prognoza_Naiwna_MW\", type number}, {\"Prognoza_Model_MW\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Zapotrzebowanie rzeczywiste (MW)",
+            "expression": "AVERAGE(Fakt_Prognoza[Rzeczywiste_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Prognoza modelu (MW)",
+            "expression": "AVERAGE(Fakt_Prognoza[Prognoza_Model_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Prognoza PSE (MW)",
+            "expression": "AVERAGE(Fakt_Prognoza[Prognoza_PSE_MW])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "MAPE modelu (%)",
+            "expression": "AVERAGEX(Fakt_Prognoza, DIVIDE(ABS(Fakt_Prognoza[Prognoza_Model_MW] - Fakt_Prognoza[Rzeczywiste_MW]), Fakt_Prognoza[Rzeczywiste_MW]))",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "MAPE PSE (%)",
+            "expression": "AVERAGEX(Fakt_Prognoza, DIVIDE(ABS(Fakt_Prognoza[Prognoza_PSE_MW] - Fakt_Prognoza[Rzeczywiste_MW]), Fakt_Prognoza[Rzeczywiste_MW]))",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "MAPE prognozy naiwnej (%)",
+            "expression": "AVERAGEX(Fakt_Prognoza, DIVIDE(ABS(Fakt_Prognoza[Prognoza_Naiwna_MW] - Fakt_Prognoza[Rzeczywiste_MW]), Fakt_Prognoza[Rzeczywiste_MW]))",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "MAE modelu (MW)",
+            "expression": "AVERAGEX(Fakt_Prognoza, ABS(Fakt_Prognoza[Prognoza_Model_MW] - Fakt_Prognoza[Rzeczywiste_MW]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "MAE PSE (MW)",
+            "expression": "AVERAGEX(Fakt_Prognoza, ABS(Fakt_Prognoza[Prognoza_PSE_MW] - Fakt_Prognoza[Rzeczywiste_MW]))",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Fakt_Symulacja",
+        "columns": [
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Zmiana_C",
+            "dataType": "int64",
+            "sourceColumn": "Zmiana_C",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Prognoza_MW",
+            "dataType": "double",
+            "sourceColumn": "Prognoza_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fakt_Symulacja",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_fakt_symulacja\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Data\", type date}, {\"Godzina\", Int64.Type}, {\"Zmiana_C\", Int64.Type}, {\"Prognoza_MW\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Prognoza bazowa (MW)",
+            "expression": "CALCULATE(AVERAGE(Fakt_Symulacja[Prognoza_MW]), Fakt_Symulacja[Zmiana_C] = 0)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Prognoza przy zmianie temperatury (MW)",
+            "expression": [
+              "VAR Zmiana = [Wybrana zmiana temperatury (°C)]",
+              "RETURN CALCULATE(AVERAGE(Fakt_Symulacja[Prognoza_MW]), Fakt_Symulacja[Zmiana_C] = Zmiana)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Zmiana zapotrzebowania (%)",
+            "expression": "DIVIDE([Prognoza przy zmianie temperatury (MW)] - [Prognoza bazowa (MW)], [Prognoza bazowa (MW)])",
+            "formatString": "+0.00%;-0.00%;0.00%"
+          }
+        ]
+      },
+      {
+        "name": "Dim_Kalendarz",
+        "columns": [
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd",
+            "isKey": true
+          },
+          {
+            "name": "Rok",
+            "dataType": "int64",
+            "sourceColumn": "Rok",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Kwartal",
+            "dataType": "string",
+            "sourceColumn": "Kwartal",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "MiesiacNr",
+            "dataType": "int64",
+            "sourceColumn": "MiesiacNr",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Miesiac",
+            "dataType": "string",
+            "sourceColumn": "Miesiac",
+            "summarizeBy": "none",
+            "sortByColumn": "MiesiacNr"
+          },
+          {
+            "name": "RokMiesiac",
+            "dataType": "string",
+            "sourceColumn": "RokMiesiac",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "PoczatekMiesiaca",
+            "dataType": "dateTime",
+            "sourceColumn": "PoczatekMiesiaca",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "DzienTygodniaNr",
+            "dataType": "int64",
+            "sourceColumn": "DzienTygodniaNr",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "DzienTygodnia",
+            "dataType": "string",
+            "sourceColumn": "DzienTygodnia",
+            "summarizeBy": "none",
+            "sortByColumn": "DzienTygodniaNr"
+          },
+          {
+            "name": "Sezon",
+            "dataType": "string",
+            "sourceColumn": "Sezon",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "TypDnia",
+            "dataType": "string",
+            "sourceColumn": "TypDnia",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "NazwaSwieta",
+            "dataType": "string",
+            "sourceColumn": "NazwaSwieta",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Kalendarz",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_dim_kalendarz\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Data\", type date}, {\"Rok\", Int64.Type}, {\"Kwartal\", type text}, {\"MiesiacNr\", Int64.Type}, {\"Miesiac\", type text}, {\"RokMiesiac\", type text}, {\"PoczatekMiesiaca\", type date}, {\"DzienTygodniaNr\", Int64.Type}, {\"DzienTygodnia\", type text}, {\"Sezon\", type text}, {\"TypDnia\", type text}, {\"NazwaSwieta\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "dataCategory": "Time"
+      },
+      {
+        "name": "Dim_Godzina",
+        "columns": [
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0",
+            "isKey": true
+          },
+          {
+            "name": "Przedzial",
+            "dataType": "string",
+            "sourceColumn": "Przedzial",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "PoraDnia",
+            "dataType": "string",
+            "sourceColumn": "PoraDnia",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Godzina",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_dim_godzina\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Godzina\", Int64.Type}, {\"Przedzial\", type text}, {\"PoraDnia\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Zrodlo",
+        "columns": [
+          {
+            "name": "KodZrodla",
+            "dataType": "string",
+            "sourceColumn": "KodZrodla",
+            "summarizeBy": "none",
+            "isKey": true
+          },
+          {
+            "name": "NazwaZrodla",
+            "dataType": "string",
+            "sourceColumn": "NazwaZrodla",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Kategoria",
+            "dataType": "string",
+            "sourceColumn": "Kategoria",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Grupa",
+            "dataType": "string",
+            "sourceColumn": "Grupa",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Zrodlo",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_dim_zrodlo\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"KodZrodla\", type text}, {\"NazwaZrodla\", type text}, {\"Kategoria\", type text}, {\"Grupa\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Lokalizacja",
+        "columns": [
+          {
+            "name": "IdStacji",
+            "dataType": "string",
+            "sourceColumn": "IdStacji",
+            "summarizeBy": "none",
+            "isKey": true
+          },
+          {
+            "name": "Miasto",
+            "dataType": "string",
+            "sourceColumn": "Miasto",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Wojewodztwo",
+            "dataType": "string",
+            "sourceColumn": "Wojewodztwo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Szerokosc",
+            "dataType": "double",
+            "sourceColumn": "Szerokosc",
+            "summarizeBy": "none",
+            "formatString": "#,0.0",
+            "dataCategory": "Latitude"
+          },
+          {
+            "name": "Dlugosc",
+            "dataType": "double",
+            "sourceColumn": "Dlugosc",
+            "summarizeBy": "none",
+            "formatString": "#,0.0",
+            "dataCategory": "Longitude"
+          },
+          {
+            "name": "LudnoscWojewodztwa_mln",
+            "dataType": "double",
+            "sourceColumn": "LudnoscWojewodztwa_mln",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "UdzialMocyWiatrowej",
+            "dataType": "double",
+            "sourceColumn": "UdzialMocyWiatrowej",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Lokalizacja",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_dim_lokalizacja\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"IdStacji\", type text}, {\"Miasto\", type text}, {\"Wojewodztwo\", type text}, {\"Szerokosc\", type number}, {\"Dlugosc\", type number}, {\"LudnoscWojewodztwa_mln\", type number}, {\"UdzialMocyWiatrowej\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Klastry_Zapotrzebowanie_Doby",
+        "columns": [
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Klaster",
+            "dataType": "int64",
+            "sourceColumn": "Klaster",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "NazwaKlastra",
+            "dataType": "string",
+            "sourceColumn": "NazwaKlastra",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Klastry_Zapotrzebowanie_Doby",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_klastry_zapotrzebowanie_doby\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Data\", type date}, {\"Klaster\", Int64.Type}, {\"NazwaKlastra\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Liczba dób",
+            "expression": "COUNTROWS(Klastry_Zapotrzebowanie_Doby)",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Klastry_Zapotrzebowanie_Profile",
+        "columns": [
+          {
+            "name": "Klaster",
+            "dataType": "int64",
+            "sourceColumn": "Klaster",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Wartosc",
+            "dataType": "double",
+            "sourceColumn": "Wartosc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "NazwaKlastra",
+            "dataType": "string",
+            "sourceColumn": "NazwaKlastra",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Klastry_Zapotrzebowanie_Profile",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_klastry_zapotrzebowanie_profile\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Klaster\", Int64.Type}, {\"Godzina\", Int64.Type}, {\"Wartosc\", type number}, {\"NazwaKlastra\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Profil zapotrzebowania (MW)",
+            "expression": "AVERAGE(Klastry_Zapotrzebowanie_Profile[Wartosc])",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Klastry_Ceny_Doby",
+        "columns": [
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "sourceColumn": "Data",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "name": "Klaster",
+            "dataType": "int64",
+            "sourceColumn": "Klaster",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "NazwaKlastra",
+            "dataType": "string",
+            "sourceColumn": "NazwaKlastra",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Klastry_Ceny_Doby",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_klastry_ceny_doby\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Data\", type date}, {\"Klaster\", Int64.Type}, {\"NazwaKlastra\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Klastry_Ceny_Profile",
+        "columns": [
+          {
+            "name": "Klaster",
+            "dataType": "int64",
+            "sourceColumn": "Klaster",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Godzina",
+            "dataType": "int64",
+            "sourceColumn": "Godzina",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "Wartosc",
+            "dataType": "double",
+            "sourceColumn": "Wartosc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "NazwaKlastra",
+            "dataType": "string",
+            "sourceColumn": "NazwaKlastra",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Klastry_Ceny_Profile",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_klastry_ceny_profile\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Klaster\", Int64.Type}, {\"Godzina\", Int64.Type}, {\"Wartosc\", type number}, {\"NazwaKlastra\", type text}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Profil ceny (PLN/MWh)",
+            "expression": "AVERAGE(Klastry_Ceny_Profile[Wartosc])",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Waznosc_Cech",
+        "columns": [
+          {
+            "name": "Cecha",
+            "dataType": "string",
+            "sourceColumn": "Cecha",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "NazwaCechy",
+            "dataType": "string",
+            "sourceColumn": "NazwaCechy",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "WzrostMAE_MW",
+            "dataType": "double",
+            "sourceColumn": "WzrostMAE_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Odchylenie",
+            "dataType": "double",
+            "sourceColumn": "Odchylenie",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Waznosc_Cech",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_waznosc_cech\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Cecha\", type text}, {\"NazwaCechy\", type text}, {\"WzrostMAE_MW\", type number}, {\"Odchylenie\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Ważność cechy (MW)",
+            "expression": "SUM(Waznosc_Cech[WzrostMAE_MW])",
+            "formatString": "#,0"
+          }
+        ]
+      },
+      {
+        "name": "Metryki_Modeli",
+        "columns": [
+          {
+            "name": "Model",
+            "dataType": "string",
+            "sourceColumn": "Model",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "MAPE_proc",
+            "dataType": "double",
+            "sourceColumn": "MAPE_proc",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "MAE_MW",
+            "dataType": "double",
+            "sourceColumn": "MAE_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "RMSE_MW",
+            "dataType": "double",
+            "sourceColumn": "RMSE_MW",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Metryki_Modeli",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Odbc.Query(\"Driver={SQLite3 ODBC Driver};Database=\" & PlikBazy, \"SELECT * FROM pbi_metryki_modeli\"),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Model\", type text}, {\"MAPE_proc\", type number}, {\"MAE_MW\", type number}, {\"RMSE_MW\", type number}}, \"en-US\")",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Parametr_Temperatura",
+        "columns": [
+          {
+            "name": "Zmiana_C",
+            "dataType": "int64",
+            "sourceColumn": "Zmiana_C",
+            "summarizeBy": "none",
+            "formatString": "+0;-0;0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Parametr_Temperatura",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Zrodlo = Table.FromList({-10..10}, Splitter.SplitByNothing(), {\"Zmiana_C\"}),",
+                "    Typy = Table.TransformColumnTypes(Zrodlo, {{\"Zmiana_C\", Int64.Type}})",
+                "in",
+                "    Typy"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Wybrana zmiana temperatury (°C)",
+            "expression": "SELECTEDVALUE(Parametr_Temperatura[Zmiana_C], 0)",
+            "formatString": "+0;-0;0"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "df80e7d5-c41d-5387-b436-31771a8466a8",
+        "fromTable": "Fakt_KSE_Godzinowy",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      },
+      {
+        "name": "867898d9-ef04-50ac-843d-8bb90def5cfd",
+        "fromTable": "Fakt_KSE_Godzinowy",
+        "fromColumn": "Godzina",
+        "toTable": "Dim_Godzina",
+        "toColumn": "Godzina"
+      },
+      {
+        "name": "ff9f8fbd-8dcb-5384-a9b3-776328fb0f4c",
+        "fromTable": "Fakt_Miks",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      },
+      {
+        "name": "1c876634-f792-51c8-ae26-33b91c9457c9",
+        "fromTable": "Fakt_Miks",
+        "fromColumn": "Godzina",
+        "toTable": "Dim_Godzina",
+        "toColumn": "Godzina"
+      },
+      {
+        "name": "6ad90ecd-18b9-50e8-be60-1932500c8416",
+        "fromTable": "Fakt_Miks",
+        "fromColumn": "KodZrodla",
+        "toTable": "Dim_Zrodlo",
+        "toColumn": "KodZrodla"
+      },
+      {
+        "name": "221e44ea-8b84-5e1d-a23b-41736f57cb98",
+        "fromTable": "Fakt_Pogoda_Stacje",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      },
+      {
+        "name": "9e7472f4-d85a-5c4b-9fc3-abcd4bfac80a",
+        "fromTable": "Fakt_Pogoda_Stacje",
+        "fromColumn": "Godzina",
+        "toTable": "Dim_Godzina",
+        "toColumn": "Godzina"
+      },
+      {
+        "name": "0911766a-71d9-52eb-802a-9990f821cd6c",
+        "fromTable": "Fakt_Pogoda_Stacje",
+        "fromColumn": "IdStacji",
+        "toTable": "Dim_Lokalizacja",
+        "toColumn": "IdStacji"
+      },
+      {
+        "name": "20434c24-2ee9-560a-a881-dfb86870f64d",
+        "fromTable": "Fakt_Prognoza",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      },
+      {
+        "name": "fbe3b029-94b4-58af-9630-d06b8beef6a6",
+        "fromTable": "Fakt_Prognoza",
+        "fromColumn": "Godzina",
+        "toTable": "Dim_Godzina",
+        "toColumn": "Godzina"
+      },
+      {
+        "name": "1da91476-840c-5050-8d34-cf2787307acf",
+        "fromTable": "Fakt_Symulacja",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      },
+      {
+        "name": "b4dd7dc2-bb0c-54fa-9acf-ab93eb5d123b",
+        "fromTable": "Fakt_Symulacja",
+        "fromColumn": "Godzina",
+        "toTable": "Dim_Godzina",
+        "toColumn": "Godzina"
+      },
+      {
+        "name": "37d1673e-6be7-5fab-86db-479a623fd480",
+        "fromTable": "Klastry_Zapotrzebowanie_Doby",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      },
+      {
+        "name": "fe4967c8-a8f9-59c0-94fa-e60357f2ebac",
+        "fromTable": "Klastry_Ceny_Doby",
+        "fromColumn": "Data",
+        "toTable": "Dim_Kalendarz",
+        "toColumn": "Data"
+      }
+    ],
+    "expressions": [
+      {
+        "name": "PlikBazy",
+        "kind": "m",
+        "expression": "\"C:\\Users\\KLIMA\\OneDrive\\Desktop\\projekt babeczka python\\projekt_energetyka\\data\\kse.db\" meta [IsParameterQuery = true, Type = \"Text\", IsParameterQueryRequired = true]",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Text"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"PlikBazy\", \"Fakt_KSE_Godzinowy\", \"Fakt_Miks\", \"Fakt_Pogoda_Stacje\", \"Fakt_Prognoza\", \"Fakt_Symulacja\", \"Dim_Kalendarz\", \"Dim_Godzina\", \"Dim_Zrodlo\", \"Dim_Lokalizacja\", \"Klastry_Zapotrzebowanie_Doby\", \"Klastry_Zapotrzebowanie_Profile\", \"Klastry_Ceny_Doby\", \"Klastry_Ceny_Profile\", \"Waznosc_Cech\", \"Metryki_Modeli\", \"Parametr_Temperatura\"]"
+      },
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      }
+    ]
+  }
+}

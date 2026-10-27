@@ -1,0 +1,18 @@
+# środowisko i pliki tymczasowe
+.env
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# dane surowe (ok. 100 MB) – odtwarzane poleceniem: python run_pipeline.py
+data/raw/
+
+# pliki pośrednie z wcześniejszej wersji projektu (zastąpione bazą data/kse.db)
+data/processed/
+data/output/
+
+# pliki lokalne Power BI Desktop
+powerbi/**/.pbi/
+
+# notatki robocze
+TODO.md
