@@ -22,8 +22,8 @@ STRONY = [
                       "wiosenno-letnich i wieczorne szczyty cenowe latem; zależność ceny od udziału OZE (P3)."),
     ("Prognoza", "Porównanie modelu uczenia maszynowego z prognozą PSE na zbiorze testowym (P4). Parametr what-if "
                  "pozwala zmienić temperaturę o −10…+10°C – na zrzucie wybrano −5°C."),
-    ("Profile dobowe", "Typowe dobowe przebiegi zapotrzebowania i cen wyznaczone metodą K-means (P5) oraz zestawienie "
-                       "błędów wszystkich modeli prognostycznych."),
+    ("Profile dobowe", "Typowe dobowe przebiegi zapotrzebowania i cen wyznaczone metodą k-średnich (K-means, P5) "
+                       "oraz zestawienie błędów wszystkich modeli prognostycznych."),
 ]
 
 

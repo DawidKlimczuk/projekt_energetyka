@@ -1,5 +1,7 @@
 # Pogoda, OZE i cena prądu – analiza i prognoza zapotrzebowania KSE
 
+**Aplikacja online: https://kse-pogoda-oze.streamlit.app/**
+
 Projekt z przedmiotu *Metody analizy, przetwarzania i wizualizacji danych* (WSB).
 Zespół: Dawid Klimczuk (195810), Maria Gosa (159835), Wiktoria Dębińska (159859).
 

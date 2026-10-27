@@ -57,7 +57,7 @@ with prawa:
     etapy = [
         ("1. Pobranie", "API PSE, archiwum CSV PSE, energy-charts / ENTSO-E, NBP, Open-Meteo"),
         ("2. Integracja", "UTC, agregacja 15 min → 1 h, średnie ważone pogody, kalendarz świąt"),
-        ("3. Analiza", "statystyki, korelacje, krzywe mocy, klasteryzacja K-means"),
+        ("3. Analiza", "statystyki, korelacje, krzywe mocy, klasteryzacja metodą k-średnich (K-means)"),
         ("4. Modelowanie", "Ridge, Random Forest, HistGradientBoosting, walidacja chronologiczna"),
         ("5. Prezentacja", "aplikacja Streamlit oraz raport Power BI (schemat gwiazdy)"),
     ]

@@ -1,0 +1,43 @@
+# Podtrzymanie aplikacji na Streamlit Community Cloud.
+# Aplikacja usypiana jest po ok. 12 h bez odwiedzin – co 6 h otwierana jest w przeglądarce
+# (bez interfejsu), a jeśli jest uśpiona, klikany jest przycisk jej wybudzenia.
+name: Podtrzymanie aplikacji
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  odwiedz-aplikacje:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ADRES_APLIKACJI: https://kse-pogoda-oze.streamlit.app/
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalacja przeglądarki
+        run: |
+          pip install playwright==1.49.1
+          playwright install --with-deps chromium
+      - name: Odwiedzenie aplikacji
+        shell: python
+        run: |
+          import os
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              przegladarka = p.chromium.launch()
+              strona = przegladarka.new_page()
+              strona.goto(os.environ["ADRES_APLIKACJI"], timeout=120_000)
+              strona.wait_for_timeout(15_000)
+              przycisk = strona.get_by_role("button", name="Yes, get this app back up!")
+              if przycisk.count() > 0:
+                  print("Aplikacja była uśpiona – wybudzanie")
+                  przycisk.first.click()
+                  strona.wait_for_timeout(90_000)
+              else:
+                  print("Aplikacja działa")
+              przegladarka.close()

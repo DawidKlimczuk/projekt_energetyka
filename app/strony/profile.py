@@ -9,7 +9,8 @@ from wspolne import (DNI, MORSKI, NIEBIESKI, POMARANCZOWY, ZOLTY, liczba, naglow
 KOLORY_KLASTROW = [NIEBIESKI, POMARANCZOWY, MORSKI, ZOLTY]
 
 naglowek("Analiza danych · pytanie P5", "Typowe profile dobowe",
-         "Klasteryzacja K-means dobowych przebiegów zapotrzebowania i cen (każda doba = wektor 24 wartości).")
+         "Klasteryzacja metodą k-średnich (K-means) dobowych przebiegów zapotrzebowania i cen "
+         "(każda doba = wektor 24 wartości).")
 
 wybor = st.segmented_control("Profile", ["zapotrzebowanie", "ceny"], default="zapotrzebowanie",
                              format_func=lambda k: {"zapotrzebowanie": "Zapotrzebowanie na moc",
