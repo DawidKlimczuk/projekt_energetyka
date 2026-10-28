@@ -1,0 +1,4 @@
+# Statystyka języków na GitHubie: notebooki (z wykresami zapisanymi jako obrazy) traktowane są
+# jako dokumentacja, a ich wersje HTML wyświetlane w aplikacji – jako pliki wygenerowane.
+notebooks/*.ipynb linguist-documentation
+app/notebooki/*.html linguist-generated
