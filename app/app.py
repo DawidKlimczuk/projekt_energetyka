@@ -27,6 +27,7 @@ nawigacja = st.navigation({
     ],
     "Dokumentacja": [
         st.Page("strony/metodyka.py", title="Dane i metodyka", icon=":material/dataset:"),
+        st.Page("strony/dokumenty.py", title="Raport końcowy i notebooki", icon=":material/menu_book:"),
     ],
 })
 nawigacja.run()

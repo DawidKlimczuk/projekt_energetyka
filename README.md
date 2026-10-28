@@ -2,6 +2,9 @@
 
 **Aplikacja online: https://kse-pogoda-oze.streamlit.app/**
 
+W aplikacji dostępne są wszystkie elementy projektu: analizy, model prognostyczny, raport Power BI,
+raport końcowy oraz notebooki 01–05 z kodem i wynikami (strona „Raport końcowy i notebooki”).
+
 Projekt z przedmiotu *Metody analizy, przetwarzania i wizualizacji danych* (WSB).
 Zespół: Dawid Klimczuk (195810), Maria Gosa (159835), Wiktoria Dębińska (159859).
 
@@ -23,7 +26,8 @@ korzystają zarówno aplikacja analityczna, jak i raport Power BI.
 | Prognoza naiwna (tydzień wcześniej) | 5,72% | 1 048 MW |
 
 Wszystkie hipotezy badawcze H1–H5 z koncepcji projektu zostały potwierdzone – szczegóły na stronie
-startowej aplikacji.
+startowej aplikacji oraz w raporcie końcowym (`docs/raport_koncowy.pdf`). Kolejne etapy analizy
+z kodem i wynikami opisano w notebookach `notebooks/01–05`.
 
 ## Uruchomienie aplikacji
 
@@ -96,9 +100,10 @@ projekt_energetyka/
 │   ├── klasteryzacja.py     – pytanie P5: profile dobowe (K-means)
 │   ├── prognoza_na_zywo.py  – prognoza na kolejną dobę z bieżących danych
 │   └── projekt_powerbi.py   – generator projektu Power BI (.pbip)
-├── app/                     – aplikacja analityczna (Streamlit)
+├── app/                     – aplikacja analityczna (Streamlit); app/notebooki – notebooki w HTML
 ├── powerbi/                 – projekt raportu Power BI (KSE.pbip)
 ├── notebooks/               – notebooki 01–05 z opisem kolejnych etapów
+├── docs/                    – raport końcowy (PDF, DOCX)
 ├── models/                  – zapisany model produkcyjny
 ├── run_pipeline.py          – uruchomienie wszystkich etapów
 └── requirements.txt         – pełne środowisko projektu (app/requirements.txt – tylko aplikacja)
